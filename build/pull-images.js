@@ -26,5 +26,6 @@ gulp.task('pull-images', shell.task([
   `docker pull hyperledger/fabric-orderer${dockerImageTag}`,
   `docker pull hyperledger/fabric-ccenv${dockerImageTag}`,
   `docker pull hyperledger/fabric-ca${dockerImageTag}`,
+  `docker pull hyperledger/fabric-couchdb${dockerImageTag}`,
   'docker images',
 ]));
