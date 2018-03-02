@@ -12,7 +12,7 @@ Pre-requisites:
 * npm: 5.5.1 or later (usually comes with node install)
 * gulp: must be globally installed in order to use the "gulp" command, `sudo npm install -g gulp`
 
-Pull hyperledger/fabric-x86_64-xxx images by
+Pull hyperledger/fabric-xxx images by
 ```
 gulp pull-images
 ```
