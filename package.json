@@ -12,10 +12,10 @@
     "node"
   ],
   "author": "Zhao Chaoyi",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "dependencies": {
-    "fabric-client": "file:./fabric-sdk-node/fabric-client",
-    "fabric-ca-client": "file:./fabric-sdk-node/fabric-ca-client",
+    "fabric-client": "1.1.0-snapshot.100",
+    "fabric-ca-client": "1.1.0-snapshot.98",
     "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.2",
     "gulp-istanbul": "^1.1.3",

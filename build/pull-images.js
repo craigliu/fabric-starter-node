@@ -16,9 +16,8 @@ if (arch.indexOf('x64') === 0) {
 } else {
   throw new Error(`Unknow architecture: ${arch}`);
 }
+const couchdbTag = `${dockerImageTag}-0.4.6`;
 dockerImageTag += `-${release}`;
-
-console.log(`Pull Docker Images with tag ${dockerImageTag}`);
 process.env.DOCKER_IMG_TAG = dockerImageTag;
 
 gulp.task('pull-images', shell.task([
@@ -26,6 +25,11 @@ gulp.task('pull-images', shell.task([
   `docker pull hyperledger/fabric-orderer${dockerImageTag}`,
   `docker pull hyperledger/fabric-ccenv${dockerImageTag}`,
   `docker pull hyperledger/fabric-ca${dockerImageTag}`,
-  `docker pull hyperledger/fabric-couchdb${dockerImageTag}`,
-  'docker images',
-]));
+  `docker pull hyperledger/fabric-couchdb${couchdbTag}`,
+  `docker tag hyperledger/fabric-peer${dockerImageTag} hyperledger/fabric-peer:latest`,
+  `docker tag hyperledger/fabric-orderer${dockerImageTag} hyperledger/fabric-orderer:latest`,
+  `docker tag hyperledger/fabric-ccenv${dockerImageTag} hyperledger/fabric-ccenv:latest`,
+  `docker tag hyperledger/fabric-ca${dockerImageTag} hyperledger/fabric-ca:latest`,
+  `docker tag hyperledger/fabric-couchdb${couchdbTag} hyperledger/fabric-couchdb:latest`,
+  'docker images | grep hyperledger/fabric',
+], { verbose: true, ignoreErrors: true }));

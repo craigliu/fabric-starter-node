@@ -5,7 +5,7 @@ const tapePromise = require('tape-promise').default;
 
 let test = tapePromise(tape);
 
-const tempdir = path.join(os.tmpdir(), 'fabric-shim');
+const tempdir = path.join(os.tmpdir(), 'fabric-starter-node');
 
 test = ((context, f) => (...args) => {
   // eslint-disable-next-line no-param-reassign
