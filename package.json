@@ -14,6 +14,8 @@
   "author": "Zhao Chaoyi",
   "license": "ISC",
   "dependencies": {
+    "fabric-client": "file:./fabric-sdk-node/fabric-client",
+    "fabric-ca-client": "file:./fabric-sdk-node/fabric-ca-client",
     "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.2",
     "gulp-istanbul": "^1.1.3",
