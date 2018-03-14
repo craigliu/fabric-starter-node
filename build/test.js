@@ -41,7 +41,7 @@ gulp.task('test', ['clean-up', 'lint', 'pre-test', 'docker-ready'], () => gulp.s
     reporters: ['lcov', 'json', 'text', 'text-summary', 'cobertura'],
   })));
 
-gulp.task('unit', ['clean-up', 'lint', 'pre-test'], () => gulp.src([
+gulp.task('unit-test', ['clean-up', 'lint', 'pre-test'], () => gulp.src([
   // all unit test
   'test/unit/**/*.js',
 ]).pipe(tape({ reporter: tapColorize() }))
