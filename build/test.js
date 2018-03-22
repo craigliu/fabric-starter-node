@@ -30,8 +30,8 @@ gulp.task('pre-test', () => gulp.src([
 ]).pipe(istanbul())
   .pipe(istanbul.hookRequire()));
 
+// gulp.task('test', ['lint', 'pre-test', 'docker-ready'], () => gulp.src([
 gulp.task('test', ['pre-test', 'docker-ready'], () => gulp.src([
-  // gulp.task('test', ['lint', 'pre-test', 'docker-ready'], () => gulp.src([
   // all unit test
   'test/unit/**/*.js',
   // all integration test

@@ -1,23 +1,23 @@
 const Client = require('fabric-client');
 const Consts = require('../consts');
 const fs = require('fs');
-const path = require('path');
+const test = require('../base.js');
 
 const logger = require('log4js').getLogger('create-channel');
 
 logger.level = 'debug';
 
-async function createChannel() {
+test('Create Channel', async (t) => {
   try {
     const signatures = [];
     const client = Client.loadFromConfig(Consts.networkConfigPath);
-    console.log('Successfully loaded a connection profile');
+    logger.debug('Successfully loaded a connection profile');
 
     client.loadFromConfig(Consts.org1ConfigPath);
-    console.log('Successfully loaded org1 client profile');
+    logger.debug('Successfully loaded org1 client profile');
 
     await client.initCredentialStores();
-    console.log('Successully created key/value store and crypto store');
+    logger.debug('Successully created key/value store and crypto store');
 
     const ca = client.getCertificateAuthority();
     const enrollment = await ca.enroll({
@@ -25,7 +25,7 @@ async function createChannel() {
       enrollmentSecret: 'adminpw',
       profile: 'tls',
     });
-    console.log('Successfully enrolled admin');
+    logger.debug('Successfully enrolled admin');
 
     const key = enrollment.key.toBytes();
     const cert = enrollment.certificate;
@@ -33,8 +33,8 @@ async function createChannel() {
     client.setTlsClientCertAndKey(cert, key);
 
     // get the config envelope created by the configtx tool
-    const envelope_bytes = fs.readFileSync(Consts.configTxPath);
-    const config = client.extractChannelConfig(envelope_bytes);
+    const envelopeBytes = fs.readFileSync(Consts.configTxPath);
+    const config = client.extractChannelConfig(envelopeBytes);
 
     let signature = client.signChannelConfig(config);
     signatures.push(signature);
@@ -50,12 +50,18 @@ async function createChannel() {
       txId: client.newTransactionID(true),
       orderer: 'orderer.example.com',
     };
-    let resp = await client.createChannel(req);
-    console.log(resp);
-
+    const resp = await client.createChannel(req);
+    logger.debug(resp);
+    if (resp.status && resp.status === 'SUCCESS') {
+      await Consts.sleep(10000);
+      t.pass('Successfully Created Channel');
+    } else {
+      t.fail('Failed to create the channel. ');
+      throw new Error('Failed to create the channel');
+    }
   } catch (e) {
     logger.error(e);
+    t.fail(e.message);
+    t.end();
   }
-}
-
-createChannel();
+});
