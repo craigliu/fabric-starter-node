@@ -14,7 +14,7 @@
   "author": "Zhao Chaoyi",
   "license": "Apache 2.0",
   "dependencies": {
-    "fabric-ca-client": "1.1.0",
+    "fabric-ca-client": "unstable",
     "fabric-client": "1.1.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.2",

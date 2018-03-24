@@ -1,8 +1,7 @@
-const Client = require('fabric-client');
 const Consts = require('../consts');
 const fs = require('fs');
 const test = require('../base.js');
-
+const ClientStore = require('./client-store.js');
 const logger = require('log4js').getLogger('create-channel');
 
 logger.level = 'debug';
@@ -10,49 +9,43 @@ logger.level = 'debug';
 test('Create Channel', async (t) => {
   try {
     const signatures = [];
-    const client = Client.loadFromConfig(Consts.networkConfigPath);
-    logger.debug('Successfully loaded a connection profile');
-
-    client.loadFromConfig(Consts.org1ConfigPath);
-    logger.debug('Successfully loaded org1 client profile');
-
-    await client.initCredentialStores();
-    logger.debug('Successully created key/value store and crypto store');
-
-    const ca = client.getCertificateAuthority();
-    const enrollment = await ca.enroll({
-      enrollmentID: 'admin',
-      enrollmentSecret: 'adminpw',
-      profile: 'tls',
+    const configOrg1 = [Consts.networkConfigPath, Consts.org1ConfigPath];
+    const configOrg2 = [Consts.networkConfigPath, Consts.org2ConfigPath];
+    const client1 = await ClientStore.get('org1', {
+      configs: configOrg1,
+      mutualTLS: {
+        enrollmentID: 'admin',
+        enrollmentSecret: 'adminpw',
+      },
     });
-    logger.debug('Successfully enrolled admin');
-
-    const key = enrollment.key.toBytes();
-    const cert = enrollment.certificate;
-
-    client.setTlsClientCertAndKey(cert, key);
 
     // get the config envelope created by the configtx tool
     const envelopeBytes = fs.readFileSync(Consts.configTxPath);
-    const config = client.extractChannelConfig(envelopeBytes);
+    const config = client1.extractChannelConfig(envelopeBytes);
 
-    let signature = client.signChannelConfig(config);
+    let signature = client1.signChannelConfig(config);
     signatures.push(signature);
 
-    await client.loadFromConfig(Consts.org2ConfigPath);
-    await client.initCredentialStores();
-    signature = client.signChannelConfig(config);
+    const client2 = await ClientStore.get('org2', {
+      configs: configOrg2,
+      mutualTLS: {
+        enrollmentID: 'admin',
+        enrollmentSecret: 'adminpw',
+      },
+    });
+    signature = client2.signChannelConfig(config);
     signatures.push(signature);
     const req = {
       config,
       signatures,
       name: Consts.channelName,
-      txId: client.newTransactionID(true),
+      txId: client2.newTransactionID(true),
       orderer: 'orderer.example.com',
     };
-    const resp = await client.createChannel(req);
+    const resp = await client2.createChannel(req);
     logger.debug(resp);
     if (resp.status && resp.status === 'SUCCESS') {
+      logger.debug('Wait for 10 seconds to ensure the channel has been created successfully');
       await Consts.sleep(10000);
       t.pass('Successfully Created Channel');
     } else {
