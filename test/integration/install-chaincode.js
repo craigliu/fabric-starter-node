@@ -1,6 +1,6 @@
 const test = require('../base.js');
 const Consts = require('../consts.js');
-const logger = require('log4js').getLogger('install-chaincode');
+const logger = require('../utils/logger').getLogger('install-chaincode');
 const ClientStore = require('./client-store.js');
 
 logger.level = 'debug';
@@ -11,10 +11,7 @@ test('Install Chaincode', async (t) => {
     const configOrg2 = [Consts.networkConfigPath, Consts.org2ConfigPath];
     const client1 = await ClientStore.get('org1', {
       configs: configOrg1,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin1,
     });
 
     const request = {
@@ -36,10 +33,7 @@ test('Install Chaincode', async (t) => {
 
     const client2 = await ClientStore.get('org2', {
       configs: configOrg2,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin2,
     });
     request.txId = client2.newTransactionID(true);
     resp = await client2.installChaincode(request);

@@ -55,4 +55,3 @@ client:
     cryptoStore:
       # Specific to the underlying KeyValueStore that backs the crypto key store.
       path: "/tmp/hfc-cvs/org2"
-      

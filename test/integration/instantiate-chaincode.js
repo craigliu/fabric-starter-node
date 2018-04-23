@@ -1,6 +1,6 @@
 const test = require('../base.js');
 const Consts = require('../consts.js');
-const logger = require('log4js').getLogger('instantiate-chaincode');
+const logger = require('../utils/logger').getLogger('instantiate-chaincode');
 const ClientStore = require('./client-store.js');
 
 logger.level = 'debug';
@@ -11,17 +11,11 @@ test('Instantiate Chaincode', async (t) => {
     const configOrg2 = [Consts.networkConfigPath, Consts.org2ConfigPath];
     const client1 = await ClientStore.get('org1', {
       configs: configOrg1,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin1,
     });
     const client2 = await ClientStore.get('org2', {
       configs: configOrg2,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin2,
     });
 
     const channel1 = client1.getChannel(Consts.channelName);
@@ -34,6 +28,7 @@ test('Instantiate Chaincode', async (t) => {
       chaincodeType: 'node',
       chaincodeVersion: Consts.chaincodeVersion,
       targets: ['peer0.org1.example.com'],
+      args: ['a', '100', 'b', '200'],
     };
     const tx1 = request.txId;
     const promises = [];

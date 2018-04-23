@@ -10,6 +10,8 @@ const shellConfig = {
 };
 
 gulp.task('docker-clean', shell.task([
+  'rm -rf /tmp/hlf-kvs',
+  'rm -rf /tmp/hfc-cvs',
   // stop and remove chaincode docker instances
   'docker kill $(docker ps | grep "mycc" | awk \'{print $1}\')',
   'docker rm $(docker ps -a | grep "mycc" | awk \'{print $1}\')',

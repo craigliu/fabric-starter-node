@@ -2,7 +2,7 @@ const Consts = require('../consts');
 const fs = require('fs');
 const test = require('../base.js');
 const ClientStore = require('./client-store.js');
-const logger = require('log4js').getLogger('create-channel');
+const logger = require('../utils/logger').getLogger('create-channel');
 
 logger.level = 'debug';
 
@@ -13,10 +13,7 @@ test('Create Channel', async (t) => {
     const configOrg2 = [Consts.networkConfigPath, Consts.org2ConfigPath];
     const client1 = await ClientStore.get('org1', {
       configs: configOrg1,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin1,
     });
 
     // get the config envelope created by the configtx tool
@@ -28,10 +25,7 @@ test('Create Channel', async (t) => {
 
     const client2 = await ClientStore.get('org2', {
       configs: configOrg2,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin2,
     });
     signature = client2.signChannelConfig(config);
     signatures.push(signature);

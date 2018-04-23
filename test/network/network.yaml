@@ -185,8 +185,8 @@ certificateAuthorities:
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
     registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
+      - enrollId: admin1
+        enrollSecret: admin1pw
     # [Optional] The optional name of the CA.
     caName: ca-org1
 
@@ -197,7 +197,7 @@ certificateAuthorities:
     tlsCACerts:
       path: test/network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
     registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
+      - enrollId: admin2
+        enrollSecret: admin2pw
     # [Optional] The optional name of the CA.
     caName: ca-org2

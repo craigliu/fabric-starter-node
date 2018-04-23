@@ -64,3 +64,4 @@ typings/
 .idea
 
 yarn.lock
+.DS_Store

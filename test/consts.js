@@ -17,16 +17,16 @@ const org2ConfigPath = path.resolve(__dirname, './network/org2.yaml');
 const configTxPath = path.resolve(__dirname, './network/channel.tx');
 const identities = {
   admin1: {
-    username: 'admin', password: 'adminpw', enrollmentID: 'admin', enrollmentSecret: 'adminpw',
+    username: 'admin1', password: 'admin1pw', enrollmentID: 'admin1', enrollmentSecret: 'admin1pw',
   },
   admin2: {
-    username: 'admin', password: 'adminpw', enrollmentID: 'admin', enrollmentSecret: 'adminpw',
+    username: 'admin2', password: 'admin2pw', enrollmentID: 'admin2', enrollmentSecret: 'admin2pw',
   },
   user1: {
-    username: 'user1', password: 'userpw', enrollmentID: 'user1', affiliation: 'org1', enrollmentSecret: 'userpw', maxEnrollments: 0,
+    username: 'user1', password: 'userpw', enrollmentID: 'user1', affiliation: 'org1', enrollmentSecret: 'userpw', maxEnrollments: 10,
   },
   user2: {
-    username: 'user2', password: 'userpw', enrollmentID: 'user2', affiliation: 'org2', enrollmentSecret: 'userpw', maxEnrollments: 0,
+    username: 'user2', password: 'userpw', enrollmentID: 'user2', affiliation: 'org2', enrollmentSecret: 'userpw', maxEnrollments: 10,
   },
 };
 module.exports = {

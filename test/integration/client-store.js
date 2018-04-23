@@ -1,7 +1,7 @@
 const Client = require('fabric-client');
-const logger = require('log4js').getLogger('client-store');
+const logger = require('../utils/logger').getLogger('client-store');
 
-logger.level = 'debug';
+logger.level = 'info';
 
 async function newClient({ configs, mutualTLS }) {
   try {

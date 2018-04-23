@@ -1,6 +1,6 @@
 const test = require('../base.js');
 const Consts = require('../consts.js');
-const logger = require('log4js').getLogger('create-channel');
+const logger = require('../utils/logger').getLogger('create-channel');
 const ClientStore = require('./client-store.js');
 
 logger.level = 'debug';
@@ -11,10 +11,7 @@ test('Join channel', async (t) => {
     const configOrg2 = [Consts.networkConfigPath, Consts.org2ConfigPath];
     const client1 = await ClientStore.get('org1', {
       configs: configOrg1,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin1,
     });
 
     // get channel, throw error if any error happened
@@ -45,10 +42,7 @@ test('Join channel', async (t) => {
     // checkout to org2 identity
     const client2 = await ClientStore.get('org2', {
       configs: configOrg2,
-      mutualTLS: {
-        enrollmentID: 'admin',
-        enrollmentSecret: 'adminpw',
-      },
+      mutualTLS: Consts.identities.admin2,
     });
     // org2 Join Channel
     txId = client2.newTransactionID(true);
